@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.0'
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+android {
+    namespace "com.audacious_software.passive_data_kit.accessibility"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 34
+        compileSdkVersion 34
+
+        versionCode 1
+        versionName "1.0"
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+        manifestPlaceholders = [
+            appAuthRedirectScheme: "NOT-USED"
+        ]
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/ASL-2.0.txt'
+        exclude 'META-INF/LGPL-3.0.txt'
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['java/src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        androidTest.setRoot('tests')
+    }
+
+    configurations {
+        all {
+            exclude group: 'org.json', module: 'json'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    dependencies {
+        implementation 'androidx.appcompat:appcompat:1.6.1'
+        implementation 'androidx.preference:preference:1.2.1'
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
+        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.9.9'
+        implementation 'com.github.java-json-tools:json-patch:1.13'
+
+        api 'com.android.volley:volley:1.2.1'
+        api 'com.google.guava:guava:28.2-android'
+        api 'commons-io:commons-io:2.13.0'
+        api 'commons-codec:commons-codec:1.15'
+        api 'org.apache.commons:commons-lang3:3.11'
+        api 'com.google.code.findbugs:jsr305:3.0.2'
+
+        api project(path: ':PassiveDataKit')
+    }
+}
